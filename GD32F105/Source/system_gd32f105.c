@@ -37,12 +37,23 @@
 /*---------------------------------------------------------------------------
   Define clocks
  *---------------------------------------------------------------------------*/
-/* ToDo: Add here your necessary defines for device initialization
-         following is an example for different system frequencies */
-#define XTAL            (12000000U)       /* Oscillator frequency */
 
-#define SYSTEM_CLOCK    (5 * XTAL)
+ #ifdef __HXTAL_VALUE
+ #define HXTAL_VALUE __HXTAL_VALUE  // External high-speed oscilator
+ #else
+ #error HXTAL_VALUE not defined
+ #endif // __HXTAL_VALUE
 
+ #ifdef __LXTAL_VALUE
+ #define LXTAL_VALUE __LXTAL_VALUE  // External low-speed clock oscilator
+ #else
+ #error LXTAL_VALUE not defined
+ #endif // __LXTAL_VALUE
+
+ #define IRC8M          8000000     // Internal 8MHz oscilator
+ #define IRC40K         40000       // Internal 40KHz oscilator
+
+ #define SYSTEM_CLOCK   IRC8M
 
 /*---------------------------------------------------------------------------
   Exception / Interrupt Vector table
@@ -99,4 +110,18 @@ void SystemInit (void)
 #endif
 
   SystemCoreClock = SYSTEM_CLOCK;
+}
+
+/*---------------------------------------------------------------------------
+  Решение проблеммы выхода приложения за исполняемый код при завершении 
+  функции main
+ *---------------------------------------------------------------------------*/
+void main_venir(void) {
+  extern int main(void);
+
+  main();
+
+  // Dead-loop цикл-ловушка по завершению основного тела программы
+  while (1)
+    __WFI();
 }

@@ -23,9 +23,6 @@
  * limitations under the License.
  */
 
-/* ToDo: rename this file from 'startup_Device.c' to 'startup_gd32f105.c according to your device naming */
-
-
 #include "gd32f105.h"
 
 /*---------------------------------------------------------------------------
@@ -50,21 +47,21 @@ __NO_RETURN void Default_Handler(void);
   Exception / Interrupt Handler
  *---------------------------------------------------------------------------*/
 /* Exceptions */
-void NMI_Handler            (void) __attribute__ ((weak, alias("Default_Handler")));
-void HardFault_Handler      (void) __attribute__ ((weak));
-void MemManage_Handler      (void) __attribute__ ((weak, alias("Default_Handler")));
-void BusFault_Handler       (void) __attribute__ ((weak, alias("Default_Handler")));
-void UsageFault_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
-void SecureFault_Handler    (void) __attribute__ ((weak, alias("Default_Handler")));
-void SVC_Handler            (void) __attribute__ ((weak, alias("Default_Handler")));
-void DebugMon_Handler       (void) __attribute__ ((weak, alias("Default_Handler")));
-void PendSV_Handler         (void) __attribute__ ((weak, alias("Default_Handler")));
-void SysTick_Handler        (void) __attribute__ ((weak, alias("Default_Handler")));
+void NMI_Handler            (void) __attribute__ ((weak, noreturn, alias("Default_Handler")));
+void HardFault_Handler      (void) __attribute__ ((weak, noreturn));
+void MemManage_Handler      (void) __attribute__ ((weak, noreturn, alias("Default_Handler")));
+void BusFault_Handler       (void) __attribute__ ((weak, noreturn, alias("Default_Handler")));
+void UsageFault_Handler     (void) __attribute__ ((weak, noreturn, alias("Default_Handler")));
+void SecureFault_Handler    (void) __attribute__ ((weak, noreturn, alias("Default_Handler")));
+void SVC_Handler            (void) __attribute__ ((weak, noreturn, alias("Default_Handler")));
+void DebugMon_Handler       (void) __attribute__ ((weak, noreturn, alias("Default_Handler")));
+void PendSV_Handler         (void) __attribute__ ((weak, noreturn, alias("Default_Handler")));
+void SysTick_Handler        (void) __attribute__ ((weak, noreturn, alias("Default_Handler")));
 
 /* ToDo: Add your device specific interrupt handler */
-// void <DeviceInterrupt first>_Handler     (void) __attribute__ ((weak, alias("Default_Handler")));
+// void <DeviceInterrupt first>_Handler     (void) __attribute__ ((weak, noreturn, alias("Default_Handler")));
 // ...
-// void <DeviceInterrupt last>_Handler      (void) __attribute__ ((weak, alias("Default_Handler")));
+// void <DeviceInterrupt last>_Handler      (void) __attribute__ ((weak, noreturn, alias("Default_Handler")));
 
 
 /*----------------------------------------------------------------------------

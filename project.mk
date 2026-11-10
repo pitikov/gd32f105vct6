@@ -51,6 +51,22 @@ ARCH_FLAGS						+= -msoft-float
 
 # ------------------- Флаги компиляции ----------------------------------------------
 C_FLAGS							+= -MD
+C_FLAGS							+= -Wall
+C_FLAGS							+= -Wpedantic
+
+ifeq ($(DEBUG_BUILD), true)
+C_FLAGS							+= -Og
+C_FLAGS							+= -g
+C_FLAGS							+= -ggdb
+C_FLAGS							+= -gdwarf-5
+else
+C_FLAGS							+= -O2
+endif
+# ------------------- Макросы компилятора -------------------------------------------
+CDEF							+= __HXTAL_VALUE=$(HXTAL_VALUE)
+CDEF							+= __LXTAL_VALUE=$(LXTAL_VALUE)
+
+C_DEFS							+= $(foreach d,$(CDEF),-D$d)
 
 # ------------------- Каталоги поиска заголовочных файлов ---------------------------
 INCDIRS							+= $(SRC_DIR)
@@ -62,6 +78,16 @@ C_INCLUDES						+= $(foreach i,$(INCDIRS),-I$i)
 # ------------------- Флаги компановщика --------------------------------------------
 LD_FLAGS						+= -Wl,-Map=$(TARGET_MAP)
 LD_FLAGS						+= -Wl,--script=$(LD_SCRIPT)
+LD_FLAGS						+= -Wl,--print-memory-usage
+
+# ------------------- Макросы компановщика ------------------------------------------
+LD_DEFS							+= -Wl,--defsym=__ROM_BASE=0x08000000
+LD_DEFS							+= -Wl,--defsym=__ROM_SIZE=$(FLASH_SIZE)
+LD_DEFS							+= -Wl,--defsym=__RAM_BASE=0x20000000
+LD_DEFS							+= -Wl,--defsym=__RAM_SIZE=$(RAM_SIZE)
+LD_DEFS							+= -Wl,--defsym=__HEAP_SIZE=$(HEAP_SIZE)
+LD_DEFS							+= -Wl,--defsym=__STACK_SIZE=$(HEAP_SIZE)
+LD_DEFS							+= -Wl,--defsym=_start=main_venir
 
 # ------------------- Библиотеки компановщика ---------------------------------------
 LD_LIBS							+= --specs=nano.specs
@@ -71,11 +97,18 @@ else
 LD_LIBS							+= --specs=nosys.specs
 endif
 
+LIBS							+= g m gcc c
+
+LD_LIBS							+= -Wl,--start-group
+LD_LIBS							+= $(foreach l,$(LIBS),-l$l)
+LD_LIBS							+= -Wl,--end-group
+
 # ------------------- Правила сборки ------------------------------------------------
 
 default: $(TARGET_ELF)
 
 clean:
+	$(ECHO) Очистка проекта $(PROJECT_NAME)
 	$(RM) $(BUILD_DIR)
 
 objdump: $(TARGET_OBJDUMP)
@@ -101,6 +134,9 @@ $(MAP_DIR):
 $(OBJ_DIR):
 	$(MKDIR) $@
 
+$(TARGET_BIN): $(TARGET_ELF)
+	$(OBJCOPY) -Obinary $< $@
+
 $(TARGET_ELF): $(OBJECTS) $(DEST_DIR) $(MAP_DIR)
 	$(LD) -o $@ $(OBJECTS) $(ARCH_FLAGS) $(LD_FLAGS) $(LD_DEFS) $(LD_LIBS)
 
@@ -111,3 +147,8 @@ $(OBJ_DIR)/%.o: $(DEVICE_SRC_DIR)/% $(OBJ_DIR)
 	$(CC) -c $< -o $@ $(ARCH_FLAGS) $(C_FLAGS) $(C_INCLUDES) $(C_DEFS)
 
 include $(wildcard $(OBJ_DIR)/*.d)
+
+.SILENT: $(OBJ_DIR)
+.SILENT: $(DEST_DIR)
+.SILENT: $(MAP_DIR)
+.SILENT: clean

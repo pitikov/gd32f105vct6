@@ -6,6 +6,9 @@ RAM_SIZE					:= 96K
 STACK_SIZE					:= 2048
 HEAP_SIZE					:= 2048
 
+HXTAL_VALUE					:= 25000000
+LXTAL_VALUE					:= 32768
+
 DEBUG_DEVICE				:= jlink
 DEBUG_INTERFACE				:= jtag
 

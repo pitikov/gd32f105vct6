@@ -23,9 +23,7 @@
  * limitations under the License.
  */
  
-/* ToDo: rename this file from 'system_Device.h' to 'system_gd32f105.h according to your device naming */
-
-#ifndef SYSTEM_GD32F105_H   /* ToDo: replace 'GD32F105' with your device name */
+#ifndef SYSTEM_GD32F105_H
 #define SYSTEM_GD32F105_H
 
 #ifdef __cplusplus
