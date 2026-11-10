@@ -53,6 +53,7 @@ ARCH_FLAGS						+= -msoft-float
 C_FLAGS							+= -MD
 C_FLAGS							+= -Wall
 C_FLAGS							+= -Wpedantic
+C_FLAGS							+= -std=c23
 
 ifeq ($(DEBUG_BUILD), true)
 C_FLAGS							+= -Og

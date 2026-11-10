@@ -23,8 +23,6 @@
  * limitations under the License.
  */
 
-/* ToDo: rename this file from 'system_Device.c' to 'system_gd32f105.c according to your device naming */
-
 #include <stdint.h>
 #include "gd32f105.h"
 

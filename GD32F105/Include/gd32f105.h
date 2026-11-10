@@ -30,7 +30,6 @@
 extern "C" {
 #endif
 
-
 /* ========================================================================= */
 /* ============           Interrupt Number Definition           ============ */
 /* ========================================================================= */
@@ -59,12 +58,73 @@ typedef enum IRQn
   SysTick_IRQn           =  -1,  /* 15 System Tick Timer */
 
 /* ================        GD32F105 Interrupt Numbers       ================ */
-/* ToDo: Add here your device specific interrupt numbers
-         according the interrupt handlers defined in startup_Device.s
-         eg.: Interrupt for Timer#1       TIM1_IRQHandler   ->   TIM1_IRQn */
-  // <DeviceInterrupt first>_IRQn = 0,    /* first Device Interrupt*/
-  // ...
-  // <DeviceInterrupt last>_IRQn  = n     /* last Device Interrupt */
+
+  WWDGT_IRQn             =   0, /* WWDGT interrupt */
+  LVD_IRQn               =   1, /* LVD from EXTI interrupt */
+  Tamper_IRQn            =   2, /* Tamper interrupt */
+  RTC_IRQn               =   3, /* RTC global interrupt */
+  FMC_IRQn               =   4, /* FMC global interrupt */
+  RCU_IRQn               =   5, /* RCU global interrupt */
+  EXTI0_IRQn             =   6, /* EXTI Line0 interrupt */
+  EXTI1_IRQn             =   7, /* EXTI Line1 interrupt */
+  EXTI2_IRQn             =   8, /* EXTI Line2 interrupt */
+  EXTI3_IRQn             =   9, /* EXTI Line3 interrupt */
+  EXTI4_IRQn             =  10, /* EXTI Line4 interrupt */
+  DMA0_Channel0_IRQn     =  11, /* DMA0 channel0 global interrupt */
+  DMA0_Channel1_IRQn     =  12, /* DMA0 channel1 global interrupt */
+  DMA0_Channel2_IRQn     =  13, /* DMA0 channel2 global interrupt */
+  DMA0_Channel3_IRQn     =  14, /* DMA0 channel3 global interrupt */
+  DMA0_Channel4_IRQn     =  15, /* DMA0 channel4 global interrupt */
+  DMA0_Channel5_IRQn     =  16, /* DMA0 channel5 global interrupt */
+  DMA0_Channel6_IRQn     =  17, /* DMA0 channel6 global interrupt */
+  ADC0_1_IRQn            =  18, /* ADC0 and ADC1 global interrupt */
+  CAN0_TX_IRQn           =  19, /* CAN0 TX interrupts */
+  CAN0_RX0_IRQn          =  20, /* CAN0 RX0 interrupts */
+  CAN0_RX1_IRQn          =  21, /* CAN0 RX1 interrupts */
+  CAN0_EWMC_IRQn         =  22, /* CAN0 EWMC interrupts */
+  EXTI9_5_IRQn           =  23, /* EXTI line[9:5] interrupts */
+  TIMER0_BRK_IRQn        =  24, /* TIMER0 break interrupt */
+  TIMER0_UP_IRQn         =  25, /* TIMER0 update interrupt */
+  TIMER0_TRIG_COMM_IRQn  =  26, /* TIMER0 trigger and channel commutation interrupts */
+  TIMER0_CHANNEL_CC_IRQn =  27, /* TIMER0 channel capture compare interrupt */
+  TIMER1_IRQn            =  28, /* TIMER1 global interrupt */
+  TIMER2_IRQn            =  29, /* TIMER2 global interrupt */
+  TIMER3_IRQn            =  30, /* TIMER3 global interrupt */
+  I2C0_EV_IRQn           =  31, /* I2C0 event interrupt */
+  I2C0_ER_IRQn           =  32, /* I2C0 error interrupt */
+  I2C1_EV_IRQn           =  33, /* I2C1 event interrupt */
+  I2C1_ER_IRQn           =  34, /* I2C1 error interrupt */
+  SPI0_IRQn              =  35, /* SPI0 global interrupt */
+  SPI1_IRQn              =  36, /* SPI0 global interrupt */
+  USART0_IRQn            =  37, /* USART0 global interrupt */
+  USART1_IRQn            =  38, /* USART1 global interrupt */
+  USART2_IRQn            =  39, /* USART2 global interrupt */
+  EXTI15_10_IRQn         =  40, /* EXTI line[15:10] interrupts */
+  RTC_Alarm_IRQn         =  41, /* RTC alarm from EXTI interrupt */
+  USBFS_WKUP_IRQn        =  42, /* USBFS wakeup from EXTI interrupt */
+  TIMER7_BRK_IRQn        =  43, /* TIMER0 break interrupt */
+  TIMER7_UP_IRQn         =  44, /* TIMER0 update interrupt */
+  TIMER7_TRIG_COMM_IRQn  =  45, /* TIMER0 trigger and channel commutation interrupts */
+  TIMER7_CHANNEL_CC_IRQn =  46, /* TIMER0 channel capture compare interrupt */
+  EXMC_IRQn              =  48, /* EXMC global interrupt */
+  TIMER4_IRQn            =  50, /* TIMER4 global interrupt */
+  SPI2_IRQn              =  51, /* SPI2 global interrupt */
+  UART3_IRQn             =  52, /* UART3 global interrupt */
+  UART4_IRQn             =  53, /* UART4 global interrupt */
+  TIMER5_IRQn            =  54, /* TIMER5 global interrupt */
+  TIMER6_IRQn            =  55, /* TIMER6 global interrupt */
+  DMA1_Channel0_IRQn     =  56, /* DMA1 channel0 global interrupt */
+  DMA1_Channel1_IRQn     =  57, /* DMA1 channel1 global interrupt */
+  DMA1_Channel2_IRQn     =  58, /* DMA1 channel2 global interrupt */
+  DMA1_Channel3_IRQn     =  59, /* DMA1 channel3 global interrupt */
+  DMA1_Channel4_IRQn     =  60, /* DMA1 channel4 global interrupt */
+  ENET_IRQn              =  61, /* ENET global interrupt */
+  ENET_WKUP_IRQn         =  62, /* ENET wakeup from EXTI interrupt */
+  CAN1_TX_IRQn           =  63, /* CAN0 TX interrupts */
+  CAN1_RX0_IRQn          =  64, /* CAN0 RX0 interrupts */
+  CAN1_RX1_IRQn          =  65, /* CAN0 RX1 interrupts */
+  CAN1_EWMC_IRQn         =  66, /* CAN0 EWMC interrupts */
+  USBFS_IRQn             =  67, /* USBFS global interrupt */
 } IRQn_Type;
 
 
