@@ -37,6 +37,7 @@ TARGET_ELF						:= $(DEST_DIR)/$(PROJECT_NAME).elf
 TARGET_BIN						:= $(TARGET_ELF:.elf=.bin)
 TARGET_MAP						:= $(MAP_DIR)/$(PROJECT_NAME).map
 TARGET_OBJDUMP					:= $(TARGET_MAP:.map=.objdump)
+LD_SCRIPT						:= $(DEVICE_CFG_DIR)/gd32f105_gcc.ld
 
 OBJECTS							+= $(patsubst $(SRC_DIR)/%, $(OBJ_DIR)/%.o, $(wildcard $(SRC_DIR)/*.c))
 OBJECTS							+= $(patsubst $(DEVICE_SRC_DIR)/%, $(OBJ_DIR)/%.o, $(wildcard $(DEVICE_SRC_DIR)/*.c))
@@ -48,13 +49,21 @@ ARCH_FLAGS						+= -mthumb
 ARCH_FLAGS						+= -mlittle-endian
 ARCH_FLAGS						+= -msoft-float
 
-# ------------------- Флаги компиляции ---------------------------------------------
+# ------------------- Флаги компиляции ----------------------------------------------
+C_FLAGS							+= -MD
 
-# ------------------- Каталоги поиска заголовочных файлов ---------------------------------------------
+# ------------------- Каталоги поиска заголовочных файлов ---------------------------
+INCDIRS							+= $(SRC_DIR)
+INCDIRS							+= $(CORE_INC_DIR)
+INCDIRS							+= $(DEVICE_INC_DIR)
 
-# ------------------- Флаги компановщика ---------------------------------------------
+C_INCLUDES						+= $(foreach i,$(INCDIRS),-I$i)
 
-# ------------------- Библиотеки компановщика ---------------------------------------------
+# ------------------- Флаги компановщика --------------------------------------------
+LD_FLAGS						+= -Wl,-Map=$(TARGET_MAP)
+LD_FLAGS						+= -Wl,--script=$(LD_SCRIPT)
+
+# ------------------- Библиотеки компановщика ---------------------------------------
 LD_LIBS							+= --specs=nano.specs
 ifeq ($(DEBUG_BUILD), true)
 LD_LIBS							+= --specs=rdimon.specs
@@ -96,6 +105,9 @@ $(TARGET_ELF): $(OBJECTS) $(DEST_DIR) $(MAP_DIR)
 	$(LD) -o $@ $(OBJECTS) $(ARCH_FLAGS) $(LD_FLAGS) $(LD_DEFS) $(LD_LIBS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/% $(OBJ_DIR)
+	$(CC) -c $< -o $@ $(ARCH_FLAGS) $(C_FLAGS) $(C_INCLUDES) $(C_DEFS)
+
+$(OBJ_DIR)/%.o: $(DEVICE_SRC_DIR)/% $(OBJ_DIR)
 	$(CC) -c $< -o $@ $(ARCH_FLAGS) $(C_FLAGS) $(C_INCLUDES) $(C_DEFS)
 
 include $(wildcard $(OBJ_DIR)/*.d)
