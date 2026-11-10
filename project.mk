@@ -146,6 +146,9 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/% $(OBJ_DIR)
 $(OBJ_DIR)/%.o: $(DEVICE_SRC_DIR)/% $(OBJ_DIR)
 	$(CC) -c $< -o $@ $(ARCH_FLAGS) $(C_FLAGS) $(C_INCLUDES) $(C_DEFS)
 
+$(TARGET_OBJDUMP): $(TARGET_ELF) $(MAP_DIR)
+	$(OBJDUMP) -xds $< > $@
+
 include $(wildcard $(OBJ_DIR)/*.d)
 
 .SILENT: $(OBJ_DIR)
