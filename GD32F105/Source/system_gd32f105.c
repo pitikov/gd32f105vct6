@@ -95,18 +95,6 @@ void SystemInit (void)
   SCB->VTOR = (uint32_t)(&__VECTOR_TABLE[0]);
 #endif
 
-/* ToDo: Enable co-processor if it is used */
-#if (defined (__FPU_USED) && (__FPU_USED == 1U)) || \
-    (defined (__ARM_FEATURE_MVE) && (__ARM_FEATURE_MVE > 0U))
-  SCB->CPACR |= ((3U << 10U*2U) |           /* enable CP10 Full Access */
-                 (3U << 11U*2U)  );         /* enable CP11 Full Access */
-#endif
-
-/* ToDo: Initialize SAU if TZ is used */
-#if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-  TZ_SAU_Setup();
-#endif
-
   SystemCoreClock = SYSTEM_CLOCK;
 }
 

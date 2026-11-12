@@ -38,7 +38,6 @@ typedef enum IRQn
 {
 /* ================     Cortex-M Core Exception Numbers     ================ */
 
-/* ToDo: add Cortex exception numbers according the used Cortex-Core */
   Reset_IRQn             = -15,  /*  1 Reset Vector
                                        invoked on Power up and warm reset */
   NonMaskableInt_IRQn    = -14,  /*  2 Non maskable Interrupt
@@ -156,19 +155,18 @@ typedef enum IRQn
 
 
 /* --------  Configuration of Core Peripherals  ----------------------------------- */
-/* ToDo: set the defines according your Device */
 
 #define __CM3_REV               0x0201U  /* Core Revision r2p1 */
-/* ToDo: define the correct core features for the GD32F105 */
+
 #define __Vendor_SysTickConfig  0U       /* Set to 1 if different SysTick Config is used */
-#define __NVIC_PRIO_BITS        3U       /* Number of Bits used for Priority Levels */
+#define __NVIC_PRIO_BITS        4U       /* Number of Bits used for Priority Levels */
 #define __VTOR_PRESENT          1U       /* Set to 1 if VTOR is present */
-#define __MPU_PRESENT           1U       /* Set to 1 if MPU is present */
+#define __MPU_PRESENT           0U       /* Set to 1 if MPU is present */
 #define __FPU_PRESENT           0U       /* Set to 1 if FPU is present */
 #define __FPU_DP                0U       /* Set to 1 if FPU is double precision FPU (default is single precision FPU) */
-#define __DSP_PRESENT           1U       /* Set to 1 if DSP extension are present */
-#define __SAUREGION_PRESENT     1U       /* Set to 1 if SAU regions are present */
-#define __PMU_PRESENT           1U       /* Set to 1 if PMU is present */
+#define __DSP_PRESENT           0U       /* Set to 1 if DSP extension are present */
+#define __SAUREGION_PRESENT     0U       /* Set to 1 if SAU regions are present */
+#define __PMU_PRESENT           0U       /* Set to 1 if PMU is present */
 #define __PMU_NUM_EVENTCNT      8U       /* Set number of PMU Event Counters */
 #define __ICACHE_PRESENT        0U       /* Set to 1 if I-Cache is present */
 #define __DCACHE_PRESENT        0U       /* Set to 1 if D-Cache is present */
