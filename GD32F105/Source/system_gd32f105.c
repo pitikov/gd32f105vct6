@@ -26,12 +26,6 @@
 #include <stdint.h>
 #include "gd32f105.h"
 
-/* ToDo: Include partition header file if TZ is used */
-#if defined (__ARM_FEATURE_CMSE) &&  (__ARM_FEATURE_CMSE == 3U)
-  #include "partition_gd32f105.h"
-#endif
-
-
 /*---------------------------------------------------------------------------
   Define clocks
  *---------------------------------------------------------------------------*/
