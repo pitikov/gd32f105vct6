@@ -270,6 +270,154 @@ typedef struct {
 // Wait state enable register (FMC_WSEN)
 #define FMC_WSEN_WSEN             (1UL)           // FMC wait state enable register
 
+/*--------------------------------------------------------------------------------------------------------*/
+/*---Power management unit (PMU)--------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------*/
+typedef struct {
+  __IOM   uint32_t  CTL;    // Control register (PMU_CTL)
+  __IOM   uint32_t  CS;     // Control and status register (PMU_CS)
+} PMU_TypeDef;
+
+// Control register (PMU_CTL)
+#define PMU_CTL_BKPWEN      (1<<8)  // Backup Domain Write Enable
+#define PMU_CTL_LVDT_Msk    (7<<5)  // Low Voltage Detector Threshold
+#define PMU_CTL_LVDEN       (1<<4)  // Low Voltage Detector Enable
+#define PMU_CTL_STBRST      (1<<3)  // Standby Flag Reset
+#define PMU_CTL_WURST       (1<<2)  // Wakeup Flag Reset
+#define PMU_CTL_STBMOD      (1<<1)  // Standby Mode
+#define PMU_CTL_LDOLP       (1<<0)  // LDO Low Power Mode
+
+#define PMU_CTL_LVDT_2v2    (0<<5)  // Low Voltage Detector Threshold 2.2V
+#define PMU_CTL_LVDT_2v3    (1<<5)  // Low Voltage Detector Threshold 2.3V
+#define PMU_CTL_LVDT_2v4    (2<<5)  // Low Voltage Detector Threshold 2.4V
+#define PMU_CTL_LVDT_2v5    (3<<5)  // Low Voltage Detector Threshold 2.5V
+#define PMU_CTL_LVDT_2v6    (4<<5)  // Low Voltage Detector Threshold 2.6V
+#define PMU_CTL_LVDT_2v7    (5<<5)  // Low Voltage Detector Threshold 2.7V
+#define PMU_CTL_LVDT_2v8    (6<<5)  // Low Voltage Detector Threshold 2.8V
+#define PMU_CTL_LVDT_2v9    (7<<5)  // Low Voltage Detector Threshold 2.9V
+
+// Control and status register (PMU_CS)
+#define PMU_CS_WUPEN        (1<<8)  // WKUP Pin Enable
+#define PMU_CS_LVDF         (1<<2)  // Low Voltage Detector Status Flag
+#define PMU_CS_STBF         (1<<1)  // Standby Flag
+#define PMU_CS_WUF          (1<<0)  // Wakeup Flag
+
+/*--------------------------------------------------------------------------------------------------------*/
+/*---Backup registers (BKP)-------------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------*/
+typedef struct {
+  __IM  uint32_t __unused_0;
+  __IOM uint16_t DATA0;
+  __IM  uint16_t __unused0;
+  __IOM uint16_t DATA1;
+  __IM  uint16_t __unused1;
+  __IOM uint16_t DATA2;
+  __IM  uint16_t __unused2;
+  __IOM uint16_t DATA3;
+  __IM  uint16_t __unused3;
+  __IOM uint16_t DATA4;
+  __IM  uint16_t __unused4;
+  __IOM uint16_t DATA5;
+  __IM  uint16_t __unused5;
+  __IOM uint16_t DATA6;
+  __IM  uint16_t __unused6;
+  __IOM uint16_t DATA7;
+  __IM  uint16_t __unused7;
+  __IOM uint16_t DATA8;
+  __IM  uint16_t __unused8;
+  __IOM uint16_t DATA9;
+  __IM  uint16_t __unused9;
+  __IOM uint16_t OCTL;    // RTC signal output control register (BKP_OCTL)
+  __IM  uint16_t __unused_octl;
+  __IOM uint16_t TPCTL;   // Tamper pin control register (BKP_TPCTL)
+  __IM  uint16_t __unused_tpctl;
+  __IOM uint16_t TPCS;    // Tamper control and status register (BKP_TPCS)
+  __IM  uint16_t __unused_tpcs;
+  __IM  uint32_t __unused_1[2];
+  __IOM uint16_t DATA10;
+  __IM  uint16_t __unused10;
+  __IOM uint16_t DATA11;
+  __IM  uint16_t __unused11;
+  __IOM uint16_t DATA12;
+  __IM  uint16_t __unused12;
+  __IOM uint16_t DATA13;
+  __IM  uint16_t __unused13;
+  __IOM uint16_t DATA14;
+  __IM  uint16_t __unused14;
+  __IOM uint16_t DATA15;
+  __IM  uint16_t __unused15;
+  __IOM uint16_t DATA16;
+  __IM  uint16_t __unused16;
+  __IOM uint16_t DATA17;
+  __IM  uint16_t __unused17;
+  __IOM uint16_t DATA18;
+  __IM  uint16_t __unused18;
+  __IOM uint16_t DATA19;
+  __IM  uint16_t __unused19;
+  __IOM uint16_t DATA20;
+  __IM  uint16_t __unused20;
+  __IOM uint16_t DATA21;
+  __IM  uint16_t __unused21;
+  __IOM uint16_t DATA22;
+  __IM  uint16_t __unused22;
+  __IOM uint16_t DATA23;
+  __IM  uint16_t __unused23;
+  __IOM uint16_t DATA24;
+  __IM  uint16_t __unused24;
+  __IOM uint16_t DATA25;
+  __IM  uint16_t __unused25;
+  __IOM uint16_t DATA26;
+  __IM  uint16_t __unused26;
+  __IOM uint16_t DATA27;
+  __IM  uint16_t __unused27;
+  __IOM uint16_t DATA28;
+  __IM  uint16_t __unused28;
+  __IOM uint16_t DATA29;
+  __IM  uint16_t __unused29;
+  __IOM uint16_t DATA30;
+  __IM  uint16_t __unused30;
+  __IOM uint16_t DATA31;
+  __IM  uint16_t __unused31;
+  __IOM uint16_t DATA32;
+  __IM  uint16_t __unused32;
+  __IOM uint16_t DATA33;
+  __IM  uint16_t __unused33;
+  __IOM uint16_t DATA34;
+  __IM  uint16_t __unused34;
+  __IOM uint16_t DATA35;
+  __IM  uint16_t __unused35;
+  __IOM uint16_t DATA36;
+  __IM  uint16_t __unused36;
+  __IOM uint16_t DATA37;
+  __IM  uint16_t __unused37;
+  __IOM uint16_t DATA38;
+  __IM  uint16_t __unused38;
+  __IOM uint16_t DATA39;
+  __IM  uint16_t __unused39;
+  __IOM uint16_t DATA40;
+  __IM  uint16_t __unused40;
+  __IOM uint16_t DATA41;
+  __IM  uint16_t __unused41;
+} BKP_TypeDef;
+
+// RTC signal output control register (BKP_OCTL)
+#define BKP_OCTL_ROSEL      (1<<9)    // RTC output selection
+#define BKP_OCTL_ASOEN      (1<<8)    // RTC alarm or second signal output enable
+#define BKP_OCTL_COEN       (1<<7)    // RTC clock calibration output enable
+#define BKP_OCTL_RCCV       (0x8FUL)  // RTC clock calibration value
+
+// Tamper pin control register (BKP_TPCTL)
+#define BKP_TPCTL_TPAL      (1<<1)    // TAMPER pin active level
+#define BKP_TPCTL_TPEN      (1<<0)    // TAMPER detection enable
+
+// Tamper control and status register (BKP_TPCS)
+#define BKP_TPCS_TIF        (1<<9)    // Tamper interrupt flag
+#define BKP_TPCS_TEF        (1<<8)    // Tamper event flag
+#define BKP_TPCS_TPIE       (1<<2)    // Tamper interrupt enable
+#define BKP_TPCS_TIR        (1<<1)    // Tamper interrupt reset
+#define BKP_TPCS_TER        (1<<0)    // Tamper event reset
+
+
 /* ToDo: add here your device specific peripheral access structure typedefs
          including bit definitions for Pos/Msk macros
          following is an example for a timer */
@@ -422,6 +570,8 @@ typedef struct {
 #define U_DEV_ID                ((UniqueDeviceID_TypeDef*)      0x1FFFF7E8UL)
 
 #define FMC                     ((FMC_TypeDef*)                     FMC_BASE)
+#define PMU                     ((PMU_TypeDef*)                     PMU_BASE)
+#define BKP                     ((BKP_TypeDef)*                     BKP_BASE)
 
 #ifdef __cplusplus
 }
