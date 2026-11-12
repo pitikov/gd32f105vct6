@@ -183,6 +183,94 @@ typedef enum IRQn
 /* ============       Device Specific Peripheral Section        ============ */
 /* ========================================================================= */
 
+/*--------------------------------------------------------------------------------------------------------*/
+/*---Memory density information---------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------*/
+typedef struct {
+  __IM uint16_t FLASH_DENSITY;  // The value indicates the Flash memory density of the device in Kbytes.
+  __IM uint16_t SRAM_DENSITY;   // The value indicates the on-chip SRAM density of the device in Kbytes.
+} MEMORY_DENSITY_INFO_TypeDef;
+
+
+/*--------------------------------------------------------------------------------------------------------*/
+/*---Unique device ID (96 bits)---------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------*/
+typedef struct {
+  __IM uint32_t U_ID31_0;
+  __IM uint32_t U_ID63_32;
+  __IM uint32_t U_ID95_64;
+} UniqueDeviceID_TypeDef;
+
+/*--------------------------------------------------------------------------------------------------------*/
+/*---Flash memory controller (FMC)------------------------------------------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------*/
+typedef struct {
+  __IOM uint32_t WS;        // Wait state register (FMC_WS)
+  __OM  uint32_t KEY0;      // Unlock key register 0 (FMC_KEY0)
+  __OM  uint32_t OBKEY;     // Option byte unlock key register (FMC_OBKEY)
+  __IOM uint32_t STAT0;     // Status register 0 (FMC_STAT0)
+
+  __IOM uint32_t CTL0;      // Control register 0 (FMC_CTL0)
+  __OM  uint32_t ADDR0;     // Address register 0 (FMC_ADDR0)
+  __IM  uint32_t __UNUSED0;
+  __IM  uint32_t OBSTAT;    // Option byte status register (FMC_OBSTAT)
+  
+  __IM  uint32_t WP;        // Erase/Program Protection register (FMC_WP)
+  __IM  uint32_t __UNUSED1[(0x44-0x24)/4];
+  __OM  uint32_t KEY1;      // Unlock key register 1(FMC_KEY1)
+  __IM  uint32_t __UNUSED2;
+  __IOM uint32_t STAT1;     // Status register 1 (FMC_STAT1)
+  __IOM uint32_t CTL1;      // Control register 1 (FMC_CTL1)
+  __OM  uint32_t ADDR1;     // Address register 000FMC_ADDR1)
+  __IM  uint32_t __UNUSED3[41];
+  __IOM uint32_t WSEN;      // Wait state enable register (FMC_WSEN)
+  __IM  uint32_t PID;       // Product ID register (FMC_PID)
+} FMC_TypeDef;
+
+// Wait state register (FMC_WS)
+#define FMC_WS_WSCNT_Msk          (7UL)
+#define FMC_WS_WSCNT_0            (0UL)   // 0 wait state added
+#define FMC_WS_WSCNT_1            (1UL)   // 1 wait state added
+#define FMC_WS_WSCNT_2            (2UL)   // 2 wait state added
+
+// Status register 0,1 (FMC_STAT0, FMC_STAT1)
+#define FMC_STAT0_ENDF            (1<<5)  // End of operation flag bit
+#define FMC_STAT0_WPERR           (1<<4)  // Erase/Program protection error flag bit
+#define FMC_STAT0_PGERR           (1<<2)  // Program error flag bit
+#define FMC_STAT0_BUSY            (1<<0)  // The flash busy bit
+#define FMC_STAT1_ENDF            (1<<5)  // End of operation flag bit
+#define FMC_STAT1_WPERR           (1<<4)  // Erase/Program protection error flag bit
+#define FMC_STAT1_PGERR           (1<<2)  // Program error flag bit
+#define FMC_STAT1_BUSY            (1<<0)  // The flash busy bit
+
+
+// Control register 0,1 (FMC_CTL0, FMC_CTL1)
+#define FMC_CTL0_ENDIE            (1<<12) // End of operation interrupt enable bit
+#define FMC_CTL1_ENDIE            (1<<12) // End of operation interrupt enable bit
+#define FMC_CTL0_ERRIE            (1<<10) // Error interrupt enable bit
+#define FMC_CTL1_ERRIE            (1<<10) // Error interrupt enable bit
+#define FMC_CTL0_OBWEN            (1<<9)  // Option byte erase/program enable bit
+#define FMC_CTL0_LK               (1<<7)  // FMC_CTL0 lock bit
+#define FMC_CTL1_LK               (1<<7)  // FMC_CTL1 lock bit
+#define FMC_CTL0_START            (1<<6)  // Send erase command to FMC bit
+#define FMC_CTL1_START            (1<<6)  // Send erase command to FMC bit
+#define FMC_CTL0_OBER             (1<<5)  // Option bytes erase command bit
+#define FMC_CTL0_OBPG             (1<<4)  // Option bytes program command bit
+#define FMC_CTL0_MER              (1<<2)  // Main flash mass erase for bank0 command bit
+#define FMC_CTL1_MER              (1<<2)  // Main flash mass erase for bank1 command bit
+#define FMC_CTL0_PER              (1<<1)  // Main flash page erase for bank0 command bit
+#define FMC_CTL1_PER              (1<<1)  // Main flash page erase for bank1 command bit
+#define FMC_CTL0_PG               (1<<0)  // Main flash program for bank0 command bit
+#define FMC_CTL1_PG               (1<<0)  // Main flash program for bank1 command bit
+
+// Option byte status register (FMC_OBSTAT)
+#define FMC_OBSTAT_DATA           (0xFFFFUL<<10)  // Store DATA of option bytes block after system reset.
+#define FMC_OBSTAT_USER           (0xFFUL<<2)     // Store USER of option bytes block after system reset.
+#define FMC_OBSTAT_SPC            (1<<1)          // Option bytes security protection code
+#define FMC_OBSTAT_OBERR          (1<<0)          // Option bytes read error bit.
+
+// Wait state enable register (FMC_WSEN)
+#define FMC_WSEN_WSEN             (1UL)           // FMC wait state enable register
 
 /* ToDo: add here your device specific peripheral access structure typedefs
          including bit definitions for Pos/Msk macros
@@ -244,19 +332,80 @@ typedef enum IRQn
 /* ============     Device Specific Peripheral Address Map      ============ */
 /* ========================================================================= */
 
+#define EXMC_SWREG_BASE                         (0xA0000000UL)                                /* EXMC - SWREG base address */
+#define EXMC_PC_CARD_BASE                       (0x90000000UL)                                /* EXMC - PC CARD base address */
+#define EXMC_NAND_BASE                          (0x70000000UL)                                /* EXMC - NAND base address */
+#define EXMC_NOR_BASE                           (0x60000000UL)                                /* EXMC - NOR base address */
+#define EXMC_PSRAM_BAS                          (0x60000000UL)                                /* EXMC - PSRAM base address */
+#define EXMC_SRAM_BASE                          (0x60000000UL)                                /* EXMC - SRAM base address */
 
-/* ToDo: add here your device peripherals base addresses
-         following is an example for timer */
+#define SRAM_BASE                               (0x20000000UL)
+#define MAIN_FLASH_BASE                         (0x08000000UL)
 
-/* Peripheral and SRAM base address */
-// #define <DeviceAbbreviation>_FLASH_BASE       (0x00000000UL)                              /* (FLASH     ) Base Address */
-// #define <DeviceAbbreviation>_SRAM_BASE        (0x20000000UL)                              /* (SRAM      ) Base Address */
-// #define <DeviceAbbreviation>_PERIPH_BASE      (0x40000000UL)                              /* (Peripheral) Base Address */
+#define BOOT_LOADER_BASE                        (0x1FFFB000UL)
+#define OPTION_BYTES_BASE                       (0x1FFFF800UL)
 
-// /* Peripheral memory map */
-// #define <DeviceAbbreviation>TIM0_BASE         (<DeviceAbbreviation>_PERIPH_BASE)          /* (Timer0    ) Base Address */
-// #define <DeviceAbbreviation>TIM1_BASE         (<DeviceAbbreviation>_PERIPH_BASE + 0x0800) /* (Timer1    ) Base Address */
-// #define <DeviceAbbreviation>TIM2_BASE         (<DeviceAbbreviation>_PERIPH_BASE + 0x1000) /* (Timer2    ) Base Address */
+#define USBFS_BASE                              (0x50000000UL)
+#define ENET_BASE                               (0x40028000UL)
+#define CRC_BASE                                (0x40023000UL)
+#define FMC_BASE                                (0x40022000UL)
+#define RCU_BASE                                (0x40021000UL)
+#define DMA1_BASE                               (0x40020400UL)
+#define DMA0_BASE                               (0x40020000UL)
+#define SDIO_BASE                               (0x40018000UL)
+
+#define APB1_BASE                               (0x40000000UL)
+#define APB2_BASE                               (0x40010000UL)
+
+#define AFIO_BASE                               (APB2_BASE + 0x0000UL)
+#define EXTI_BASE                               (APB2_BASE + 0x0400UL)
+#define GPIOA_BASE                              (APB2_BASE + 0x0800UL)
+#define GPIOB_BASE                              (APB2_BASE + 0x0C00UL)
+#define GPIOC_BASE                              (APB2_BASE + 0x1000UL)
+#define GPIOD_BASE                              (APB2_BASE + 0x1400UL)
+#define GPIOE_BASE                              (APB2_BASE + 0x1800UL)
+#define GPIOF_BASE                              (APB2_BASE + 0x1C00UL)
+#define GPIOG_BASE                              (APB2_BASE + 0x2000UL)
+#define ADC0_BASE                               (APB2_BASE + 0x2400UL)
+#define ADC1_BASE                               (APB2_BASE + 0x2800UL)
+#define TIMER0_BASE                             (APB2_BASE + 0x2C00UL)
+#define SPI0_BASE                               (APB2_BASE + 0x3000UL)
+#define TIMER7_BASE                             (APB2_BASE + 0x3400UL)
+#define USART0_BASE                             (APB2_BASE + 0x3800UL)
+#define ADC2_BASE                               (APB2_BASE + 0x3C00UL)
+#define TIMER8_BASE                             (APB2_BASE + 0x4C00UL)
+#define TIMER9_BASE                             (APB2_BASE + 0x5000UL)
+#define TIMER10_BASE                            (APB2_BASE + 0x5400UL)
+
+#define TIMER1_BASE                             (APB1_BASE + 0x0000UL)
+#define TIMER2_BASE                             (APB1_BASE + 0x0400UL)
+#define TIMER3_BASE                             (APB1_BASE + 0x0800UL)
+#define TIMER4_BASE                             (APB1_BASE + 0x0C00UL)
+#define TIMER5_BASE                             (APB1_BASE + 0x1000UL)
+#define TIMER6_BASE                             (APB1_BASE + 0x1400UL)
+#define TIMER11_BASE                            (APB1_BASE + 0x1800UL)
+#define TIMER12_BASE                            (APB1_BASE + 0x1C00UL)
+#define TIMER13_BASE                            (APB1_BASE + 0x2000UL)
+#define RTC_BASE                                (APB1_BASE + 0x2800UL)
+#define WWDGT_BASE                              (APB1_BASE + 0x2C00UL)
+#define FWDGT_BASE                              (APB1_BASE + 0x3000UL)
+#define SPI1_BASE                               (APB1_BASE + 0x3800UL)
+#define SPI2_BASE                               (APB1_BASE + 0x3C00UL)
+#define USART1_BASE                             (APB1_BASE + 0x4400UL)
+#define USART2_BASE                             (APB1_BASE + 0x4800UL)
+#define UART3_BASE                              (APB1_BASE + 0x4C00UL)
+#define UART4_BASE                              (APB1_BASE + 0x5000UL)
+#define I2C0_BASE                               (APB1_BASE + 0x5400UL)
+#define I2C1_BASE                               (APB1_BASE + 0x5800UL)
+#define USBD_BASE                               (APB1_BASE + 0x5C00UL)
+#define CAN0_BASE                               (APB1_BASE + 0x6400UL)
+#define CAN1_BASE                               (APB1_BASE + 0x6800UL)
+#define BKP_BASE                                (APB1_BASE + 0x6C00UL)
+#define PMU_BASE                                (APB1_BASE + 0x7000UL)
+#define DAC_BASE                                (APB1_BASE + 0x7400UL)
+
+
+
 
 
 /* ========================================================================= */
@@ -270,6 +419,11 @@ typedef enum IRQn
 // #define <DeviceAbbreviation>_TIM0        ((<DeviceAbbreviation>_TMR_TypeDef *) <DeviceAbbreviation>TIM0_BASE)
 // #define <DeviceAbbreviation>_TIM1        ((<DeviceAbbreviation>_TMR_TypeDef *) <DeviceAbbreviation>TIM0_BASE)
 // #define <DeviceAbbreviation>_TIM2        ((<DeviceAbbreviation>_TMR_TypeDef *) <DeviceAbbreviation>TIM0_BASE)
+
+#define MEMORY_DENSITY_INFO     ((MEMORY_DENSITY_INFO_TypeDef*) 0x1FFFF7E0UL)
+#define U_DEV_ID                ((UniqueDeviceID_TypeDef*)      0x1FFFF7E8UL)
+
+#define FMC                     ((FMC_TypeDef*)                     FMC_BASE)
 
 #ifdef __cplusplus
 }
