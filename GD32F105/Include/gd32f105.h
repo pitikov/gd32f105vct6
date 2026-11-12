@@ -417,40 +417,163 @@ typedef struct {
 #define BKP_TPCS_TIR        (1<<1)    // Tamper interrupt reset
 #define BKP_TPCS_TER        (1<<0)    // Tamper event reset
 
+/*--------------------------------------------------------------------------------------------------------*/
+/*---Connectivity line devices: Reset and clock control unit (RCU)----------------------------------------*/
+/*--------------------------------------------------------------------------------------------------------*/
+typedef struct {
+  __IOM   uint32_t    CTL;      // Control register (RCU_CTL)
+  __IOM   uint32_t    CFG0;     // Clock configuration register 0 (RCU_CFG0)
+  __IOM   uint32_t    INT;      // Clock interrupt register (RCU_INT)
+  __IOM   uint32_t    APB2RST;  // APB2 reset register (RCU_APB2RST)
+  __IOM   uint32_t    APB1RST;  // APB1 reset register (RCU_APB1RST)
+  __IOM   uint32_t    AHBEN;    // AHB enable register (RCU_AHBEN)
+  __IOM   uint32_t    APB2ENR;  // APB2 enable register (RCU_APB2EN)
+  __IOM   uint32_t    APB1ENR;  // APB1 enable register (RCU_APB1EN)
+  __IOM   uint32_t    BDCTL;    // Backup domain control register (RCU_BDCTL)
+  __IOM   uint32_t    RSTSCK;   // Reset source/clock register (RCU_RSTSCK)
+  __IOM   uint32_t    AHBRST;   // AHB reset register (RCU_AHBRST)
+  __IOM   uint32_t    CFG1;     // Clock configuration register 1 (RCU_CFG1)
+  __IOM   uint32_t    DSV;      // Deep-sleep mode voltage register (RCU_DSV)
+} RCU_TypeDef;
+
+// Control register (RCU_CTL)
+#define RCU_CTL_PLL2STB         (1<<29)   // PLL2 clock stabilization flag
+#define RCU_CTL_PLL2EN          (1<<28)   // PLL2 enable
+#define RCU_CTL_PLL1STB         (1<<27)   // PLL1 clock stabilization flag
+#define RCU_CTL_PLL1EN          (1<<26)   // PLL1 enable
+#define RCU_CTL_PLLSTB          (1<<25)   // PLL clock stabilization flag
+#define RCU_CTL_PLLEN           (1<<24)   // PLL clock enable 
+#define RCU_CTL_CKMEN           (1<<19)   // HXTAL clock monitor enable
+#define RCU_CTL_HXTALBPS        (1<<18)   // High speed crystal oscillator (HXTAL) clock bypass mode enable
+#define RCU_CTL_HXTALSTB        (1<<17)   // High speed crystal oscillator (HXTAL) clock stabilization flag
+#define RCU_CTL_HXTALEN         (1<<16)   // High speed crystal oscillator (HXTAL) enable
+#define RCU_CTL_IRC8MCALIB_Msk  (0xFF<<8) // Internal 8MHz RC oscillator calibration value register
+#define RCU_CTL_IRC8MADJ_Msk    (0x1F<<3) // Internal 8MHz RC oscillator clock trim adjust value
+#define RCU_CTL_IRC8MSTB        (1<<1)    // Internal 8MHz RC oscillator stabilization flag
+#define RCU_CTL_IRC8MEN         (1<<0)    // Internal 8MHz RC oscillator enable
+
+// Clock configuration register 0 (RCU_CFG0)
+#define RCU_CFG0_PLLMF_Msk      (0x203C0000UL)    // The PLL clock multiplication factor mask
+#define RCU_CFG0_ADCPSC_Msk     (0x1000C000UL)    // ADC clock prescaler selection
+#define RCU_CFG0_CKOUT0SEL_Msk  (0xF<<24)         // CKOUT0 clock source selection
+#define RCU_CFG0_USBFSPSC_Msk   (3<<22)           // USBFS clock prescaler selection
+#define RCU_CFG0_PREDV0_LSB     (1<<17)           // The LSB of PREDV0 division factor
+#define RCU_CFG0_PLLSEL         (1<<16)           // PLL clock source selection
+#define RCU_CFG0_APB2PSC_Msk    (7<<11)           // APB2 prescaler selection
+#define RCU_CFG0_APB1PSC_Msk    (7<<8)            // APB1 prescaler selection
+#define RCU_CFG0_AHBPSC_Msk     (0xF<<4)          // AHB prescaler selection
+#define RCU_CFG0_SCSS_Msk       (3<<2)            // System clock switch status
+#define RCU_CFG0_SCS_Msk        (3<<0)            // System clock switch
+
+#define RCU_CFG0_CKOUT0SEL_None     0         // Clock not selected
+#define RCU_CFG0_CKOUT0SEL_SysClk   (4<<24)   // System clock selected
+#define RCU_CFG0_CKOUT0SEL_IRC2M    (5<<24)   // Internel 8MHz RC Oscillator clock selected
+#define RCU_CFG0_CKOUT0SEL_HXTAL    (6<<24)   // External high speed oscillator clock selected
+#define RCU_CFG0_CKOUT0SEL_CKPLL_2  (7<<24)   // (CK_PLL / 2) clock selected
+#define RCU_CFG0_CKOUT0SEL_CKPLL1   (8<<24)   // CK_PLL1 clock selected
+#define RCU_CFG0_CKOUT0SEL_CKPLL2_2 (9<<24)   // CK_PLL2 clock divided by 2 selected
+#define RCU_CFG0_CKOUT0SEL_EXT1     (10<<24)  // EXT1 selected, to provide the external clock for ENET
+#define RCU_CFG0_CKOUT0SEL_CKPLL2   (11<<24)  // CK_PLL2 clock selected
+
+#define RCU_CFG0_USBFSPSC_PLL_1_5   (0<<22)   // CK_USBFS = CK_PLL / 1.5
+#define RCU_CFG0_USBFSPSC_PLL       (1<<22)   // CK_USBFS = CK_PLL
+#define RCU_CFG0_USBFSPSC_PLL_2_5   (2<<22)   // CK_USBFS = CK_PLL / 2.5
+#define RCU_CFG0_USBFSPSC_PLL_2     (3<<22)   // CK_USBFS = CK_PLL / 2
+
+#define RCU_CFG0_PLLMF_PLLx2    ((0<<29)|( 0<<18))    // PLL source clock x 2
+#define RCU_CFG0_PLLMF_PLLx3    ((0<<29)|( 1<<18))    // PLL source clock x 3
+#define RCU_CFG0_PLLMF_PLLx4    ((0<<29)|( 2<<18))    // PLL source clock x 4
+#define RCU_CFG0_PLLMF_PLLx5    ((0<<29)|( 3<<18))    // PLL source clock x 5
+#define RCU_CFG0_PLLMF_PLLx6    ((0<<29)|( 4<<18))    // PLL source clock x 6
+#define RCU_CFG0_PLLMF_PLLx7    ((0<<29)|( 5<<18))    // PLL source clock x 7
+#define RCU_CFG0_PLLMF_PLLx8    ((0<<29)|( 6<<18))    // PLL source clock x 8
+#define RCU_CFG0_PLLMF_PLLx9    ((0<<29)|( 7<<18))    // PLL source clock x 9
+#define RCU_CFG0_PLLMF_PLLx10   ((0<<29)|( 8<<18))    // PLL source clock x 10
+#define RCU_CFG0_PLLMF_PLLx11   ((0<<29)|( 9<<18))    // PLL source clock x 11
+#define RCU_CFG0_PLLMF_PLLx12   ((0<<29)|(10<<18))    // PLL source clock x 12
+#define RCU_CFG0_PLLMF_PLLx13   ((0<<29)|(11<<18))    // PLL source clock x 13
+#define RCU_CFG0_PLLMF_PLLx14   ((0<<29)|(12<<18))    // PLL source clock x 14
+#define RCU_CFG0_PLLMF_PLLx6_5  ((0<<29)|(13<<18))    // PLL source clock x 6.5
+#define RCU_CFG0_PLLMF_PLLx16   ((0<<29)|(14<<18))    // PLL source clock x 16
+#define RCU_CFG0_PLLMF_PLLx16_  ((0<<29)|(15<<18))    // PLL source clock x 16
+#define RCU_CFG0_PLLMF_PLLx17   ((1<<29)|( 0<<18))    // PLL source clock x 17
+#define RCU_CFG0_PLLMF_PLLx18   ((1<<29)|( 1<<18))    // PLL source clock x 18
+#define RCU_CFG0_PLLMF_PLLx19   ((1<<29)|( 2<<18))    // PLL source clock x 19
+#define RCU_CFG0_PLLMF_PLLx20   ((1<<29)|( 3<<18))    // PLL source clock x 20
+#define RCU_CFG0_PLLMF_PLLx21   ((1<<29)|( 4<<18))    // PLL source clock x 21
+#define RCU_CFG0_PLLMF_PLLx22   ((1<<29)|( 5<<18))    // PLL source clock x 22
+#define RCU_CFG0_PLLMF_PLLx23   ((1<<29)|( 6<<18))    // PLL source clock x 23
+#define RCU_CFG0_PLLMF_PLLx24   ((1<<29)|( 7<<18))    // PLL source clock x 24
+#define RCU_CFG0_PLLMF_PLLx25   ((1<<29)|( 8<<18))    // PLL source clock x 25
+#define RCU_CFG0_PLLMF_PLLx26   ((1<<29)|( 9<<18))    // PLL source clock x 26
+#define RCU_CFG0_PLLMF_PLLx27   ((1<<29)|(10<<18))    // PLL source clock x 27
+#define RCU_CFG0_PLLMF_PLLx28   ((1<<29)|(11<<18))    // PLL source clock x 28
+#define RCU_CFG0_PLLMF_PLLx29   ((1<<29)|(12<<18))    // PLL source clock x 29
+#define RCU_CFG0_PLLMF_PLLx30   ((1<<29)|(13<<18))    // PLL source clock x 30
+#define RCU_CFG0_PLLMF_PLLx31   ((1<<29)|(14<<18))    // PLL source clock x 31
+#define RCU_CFG0_PLLMF_PLLx32   ((1<<29)|(15<<18))    // PLL source clock x 32
+
+#define RCU_CFG0_ADCPSC_APB2_2  ((0<<28)|(0<<14))     // (CK_APB2 / 2) selected
+#define RCU_CFG0_ADCPSC_APB2_4  ((0<<28)|(1<<14))     // (CK_APB2 / 4) selected
+#define RCU_CFG0_ADCPSC_APB2_6  ((0<<28)|(2<<14))     // (CK_APB2 / 6) selected
+#define RCU_CFG0_ADCPSC_APB2_8  ((0<<28)|(3<<14))     // (CK_APB2 / 8) selected
+#define RCU_CFG0_ADCPSC_APB2_2_ ((1<<28)|(0<<14))     // (CK_APB2 / 2) selected
+#define RCU_CFG0_ADCPSC_APB2_12 ((1<<28)|(1<<14))     // (CK_APB2 / 12) selected
+#define RCU_CFG0_ADCPSC_APB2_8_ ((1<<28)|(2<<14))     // (CK_APB2 / 8) selected
+#define RCU_CFG0_ADCPSC_APB2_16 ((1<<28)|(3<<14))     // (CK_APB2 / 16) selected
+
+#define RCU_CFG0_PREDV0_LSB_PREDV0    0
+#define RCU_CFG0_PREDV0_LSB_PREDV0_2  RCU_CFG0_PREDV0_LSB
+
+#define RCU_CFG0_PLLSEL_IRC8M_2       0               // (IRC8M / 2) clock selected as source clock of PLL
+#define RCU_CFG0_PLLSEL_HXTAL         RCU_CFG0_PLLSEL // HXTAL selected as source clock of PLL
+
+#define RCU_CFG0_APB2PSC_AHB          (0)           // CK_AHB selected
+#define RCU_CFG0_APB2PSC_AHB_2        (4<<11)       // (CK_AHB / 2) selected
+#define RCU_CFG0_APB2PSC_AHB_4        (5<<11)       // (CK_AHB / 4) selected
+#define RCU_CFG0_APB2PSC_AHB_8        (6<<11)       // (CK_AHB / 8) selected
+#define RCU_CFG0_APB2PSC_AHB_16       (7<<11)       // (CK_AHB / 16) selected
+
+#define RCU_CFG0_APB1PSC_AHB          (0)           // CK_AHB selected
+#define RCU_CFG0_APB1PSC_AHB_2        (4<<8)        // (CK_AHB / 2) selected
+#define RCU_CFG0_APB1PSC_AHB_4        (5<<8)        // (CK_AHB / 4) selected
+#define RCU_CFG0_APB1PSC_AHB_8        (6<<8)        // (CK_AHB / 8) selected
+#define RCU_CFG0_APB1PSC_AHB_16       (7<<8)        // (CK_AHB / 16) selected
+
+#define RCU_CFG0_AHBPSC_SYS           (0)     // CK_SYS selected
+#define RCU_CFG0_AHBPSC_SYS_2         (8<<4)  // (CK_SYS / 2) selected
+#define RCU_CFG0_AHBPSC_SYS_4         (9<<4)  // (CK_SYS / 4) selected
+#define RCU_CFG0_AHBPSC_SYS_8         (10<<4) // (CK_SYS / 8) selected
+#define RCU_CFG0_AHBPSC_SYS_16        (11<<4) // (CK_SYS / 16) selected
+#define RCU_CFG0_AHBPSC_SYS_648       (12<<4) // (CK_SYS / 64) selected
+#define RCU_CFG0_AHBPSC_SYS_128       (13<<4) // (CK_SYS / 128) selected
+#define RCU_CFG0_AHBPSC_SYS_256       (14<<4) // (CK_SYS / 256) selected
+#define RCU_CFG0_AHBPSC_SYS_512       (15<<4) // (CK_SYS / 512) selected
+
+#define RCU_CFG0_SCSS_IRC8M           (0)     // Select CK_IRC8M as the CK_SYS source
+#define RCU_CFG0_SCSS_HXTAL           (1<<2)  // Select CK_HXTAL as the CK_SYS source
+#define RCU_CFG0_SCSS_PLL             (2<<2)  // Select CK_PLL as the CK_SYS source
+
+#define RCU_CFG0_SCS_IRC8M            (0)     // Select CK_IRC8M as the CK_SYS source
+#define RCU_CFG0_SCS_HXTAl            (1)     // Select CK_HXTAL as the CK_SYS source
+#define RCU_CFG0_SCS_PLL              (2)     // Select CK_PLL as the CK_SYS source
+
+// Clock interrupt register (RCU_INT)
+// APB2 reset register (RCU_APB2RST)
+// APB1 reset register (RCU_APB1RST)
+// AHB enable register (RCU_AHBEN)
+// APB2 enable register (RCU_APB2EN)
+// APB1 enable register (RCU_APB1EN)
+// Backup domain control register (RCU_BDCTL)
+// Reset source/clock register (RCU_RSTSCK)
+// AHB reset register (RCU_AHBRST)
+// Clock configuration register 1 (RCU_CFG1)
+// Deep-sleep mode voltage register (RCU_DSV)
+
 
 /* ToDo: add here your device specific peripheral access structure typedefs
          including bit definitions for Pos/Msk macros
          following is an example for a timer */
-
-/* ========================================================================= */
-/* ============                       TMR                       ============ */
-/* ========================================================================= */
-
-// typedef struct
-// {
-//   __IOM uint32_t  LOAD;                 /* Offset: 0x000 (R/W) Load Register */
-//   __IM  uint32_t  VALUE;                /* Offset: 0x004 (R/ ) Value Register */
-//   __IOM uint32_t  CONTROL;              /* Offset: 0x008 (R/W) Control Register */
-//   __OM  uint32_t  INTCLR;               /* Offset: 0x00C ( /W) Clear Interrupt Register */
-//   __IM  uint32_t  RIS;                  /* Offset: 0x010 (R/ ) Raw Interrupt Status Register */
-//   __IM  uint32_t  MIS;                  /* Offset: 0x014 (R/ ) Interrupt Status Register */
-//   __IOM uint32_t  BGLOAD;               /* Offset: 0x018 (R/W) Background Load Register */
-// } <DeviceAbbreviation>_TMR_TypeDef;
-
-// /* <DeviceAbbreviation>_TMR LOAD Register Definitions */
-// #define <DeviceAbbreviation>_TMR_LOAD_Pos              0
-// #define <DeviceAbbreviation>_TMR_LOAD_Msk             (0xFFFFFFFFUL /*<< <DeviceAbbreviation>_TMR_LOAD_Pos*/)
-
-// /* <DeviceAbbreviation>_TMR VALUE Register Definitions */
-// #define <DeviceAbbreviation>_TMR_VALUE_Pos             0
-// #define <DeviceAbbreviation>_TMR_VALUE_Msk            (0xFFFFFFFFUL /*<< <DeviceAbbreviation>_TMR_VALUE_Pos*/)
-
-// /* <DeviceAbbreviation>_TMR CONTROL Register Definitions */
-// #define <DeviceAbbreviation>_TMR_CONTROL_SIZE_Pos      1
-// #define <DeviceAbbreviation>_TMR_CONTROL_SIZE_Msk     (1UL << <DeviceAbbreviation>_TMR_CONTROL_SIZE_Pos)
-
-// #define <DeviceAbbreviation>_TMR_CONTROL_ONESHOT_Pos   0
-// #define <DeviceAbbreviation>_TMR_CONTROL_ONESHOT_Msk  (1UL /*<< <DeviceAbbreviation>_TMR_CONTROL_ONESHOT_Pos*/)
 
 
 
@@ -558,20 +681,13 @@ typedef struct {
 /* ============             Peripheral declaration              ============ */
 /* ========================================================================= */
 
-
-/* ToDo: Add here your device peripherals pointer definitions
-         following is an example for timer */
-
-// #define <DeviceAbbreviation>_TIM0        ((<DeviceAbbreviation>_TMR_TypeDef *) <DeviceAbbreviation>TIM0_BASE)
-// #define <DeviceAbbreviation>_TIM1        ((<DeviceAbbreviation>_TMR_TypeDef *) <DeviceAbbreviation>TIM0_BASE)
-// #define <DeviceAbbreviation>_TIM2        ((<DeviceAbbreviation>_TMR_TypeDef *) <DeviceAbbreviation>TIM0_BASE)
-
 #define MEMORY_DENSITY_INFO     ((MEMORY_DENSITY_INFO_TypeDef*) 0x1FFFF7E0UL)
 #define U_DEV_ID                ((UniqueDeviceID_TypeDef*)      0x1FFFF7E8UL)
 
 #define FMC                     ((FMC_TypeDef*)                     FMC_BASE)
 #define PMU                     ((PMU_TypeDef*)                     PMU_BASE)
-#define BKP                     ((BKP_TypeDef)*                     BKP_BASE)
+#define BKP                     ((BKP_TypeDef*)                     BKP_BASE)
+#define RCU                     ((RCU_TypeDef*)                     RCU_BASE)
 
 #ifdef __cplusplus
 }
