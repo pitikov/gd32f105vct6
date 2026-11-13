@@ -404,7 +404,7 @@ typedef struct {
 #define BKP_OCTL_ROSEL      (1<<9)    // RTC output selection
 #define BKP_OCTL_ASOEN      (1<<8)    // RTC alarm or second signal output enable
 #define BKP_OCTL_COEN       (1<<7)    // RTC clock calibration output enable
-#define BKP_OCTL_RCCV       (0x8FUL)  // RTC clock calibration value
+#define BKP_OCTL_RCCV       (0x7FUL)  // RTC clock calibration value
 
 // Tamper pin control register (BKP_TPCTL)
 #define BKP_TPCTL_TPAL      (1<<1)    // TAMPER pin active level
@@ -559,16 +559,218 @@ typedef struct {
 #define RCU_CFG0_SCS_PLL              (2)     // Select CK_PLL as the CK_SYS source
 
 // Clock interrupt register (RCU_INT)
+#define RCU_INT_CKMIC                 (1<<23)   // HXTAL clock stuck interrupt clear
+#define RCU_INT_PLL2STBIC             (1<<22)   // PLL2 stabilization interrupt clear
+#define RCU_INT_PLL1STBIC             (1<<21)   // PLL1 stabilization interrupt clear
+#define RCU_INT_PLLSTBIC              (1<<20)   // PLL stabilization interrupt clear
+#define RCU_INT_HXTALSTBIC            (1<<19)   // HXTAL stabilization interrupt clear
+#define RCU_INT_IRC8MSTBIC            (1<<18)   // IRC8M stabilization interrupt clear
+#define RCU_INT_LXTALSTBIC            (1<<17)   // LXTAL stabilization interrupt clear
+#define RCU_INT_IRC40KSTBIC           (1<<16)   // IRC40K stabilization interrupt clear
+#define RCU_INT_PLL2STBIE             (1<<14)   // PLL2 stabilization interrupt enable
+#define RCU_INT_PLL1STBIE             (1<<13)   // PLL1 stabilization interrupt enable
+#define RCU_INT_PLLSTBIE              (1<<12)   // PLL stabilization interrupt enable
+#define RCU_INT_HXTALSTBIE            (1<<11)   // HXTAL stabilization interrupt enable
+#define RCU_INT_IRC8MSTBIE            (1<<10)   // IRC8M Stabilization Interrupt Enable
+#define RCU_INT_LXTALSTBIE            (1<<9)    // LXTAL stabilization interrupt enable
+#define RCU_INT_IRC40KSTBIE           (1<<8)    // IRC40K stabilization interrupt enable
+#define RCU_INT_CKMIF                 (1<<7)    // HXTAL clock stuck interrupt flag
+#define RCU_INT_PLL2STBIF             (1<<6)    // PLL2 stabilization interrupt flag
+#define RCU_INT_PLL1STBIF             (1<<5)    // PLL1 stabilization interrupt flag
+#define RCU_INT_PLLSTBIF              (1<<4)    // PLL stabilization interrupt flag
+#define RCU_INT_HXTALSTBIF            (1<<3)    // HXTAL stabilization interrupt flag
+#define RCU_INT_IRC8MSTBIF            (1<<2)    // IRC8M stabilization interrupt flag
+#define RCU_INT_LXTALSTBIF            (1<<1)    // LXTAL stabilization interrupt flag
+#define RCU_INT_IRC40KSTBIF           (1<<0)    // IRC40K stabilization interrupt flag
+
 // APB2 reset register (RCU_APB2RST)
+#define RCU_APB2RST_USART0RST         (1<<14)   // USART0 reset
+#define RCU_APB2RST_TIMER7RST         (1<<13)   // Timer 7 reset
+#define RCU_APB2RST_SPI0RST           (1<<12)   // SPI0 reset
+#define RCU_APB2RST_TIMER0RST         (1<<11)   // Timer 0 reset
+#define RCU_APB2RST_ADC1RST           (1<<10)   // ADC1 reset
+#define RCU_APB2RST_ADC0RST           (1<<9)    // ADC0 reset
+#define RCU_APB2RST_PGRST             (1<<8)    // GPIO port G reset
+#define RCU_APB2RST_PFRST             (1<<7)    // GPIO port F reset
+#define RCU_APB2RST_PERST             (1<<6)    // GPIO port E reset
+#define RCU_APB2RST_PDRST             (1<<5)    // GPIO port D reset
+#define RCU_APB2RST_PCRST             (1<<4)    // GPIO port C reset
+#define RCU_APB2RST_PBRST             (1<<3)    // GPIO port B reset
+#define RCU_APB2RST_PARST             (1<<2)    // GPIO port A reset
+#define RCU_APB2RST_AFRST             (1<<0)    // Alternate function I/O reset
+
 // APB1 reset register (RCU_APB1RST)
+#define RCU_APB1RST_DACRST            (1<<29)   // DAC reset
+#define RCU_APB1RST_PMURST            (1<<28)   // Power control reset
+#define RCU_APB1RST_BKPIRST           (1<<27)   // Backup interface reset
+#define RCU_APB1RST_CAN1RST           (1<<26)   // CAN1 reset
+#define RCU_APB1RST_CAN0RST           (1<<25)   // CAN0 reset
+#define RCU_APB1RST_I2C1RST           (1<<22)   // I2C1 reset
+#define RCU_APB1RST_I2C0RST           (1<<21)   // I2C0 reset
+#define RCU_APB1RST_UART4RST          (1<<20)   // UART4 reset
+#define RCU_APB1RST_UART3RST          (1<<19)   // UART3 reset
+#define RCU_APB1RST_USART2RST         (1<<18)   // USART2 reset
+#define RCU_APB1RST_USART1RST         (1<<17)   // USART1 reset
+#define RCU_APB1RST_SPI2RST           (1<<15)   // SPI2 reset
+#define RCU_APB1RST_SPI1RST           (1<<14)   // SPI1 reset
+#define RCU_APB1RST_WWDGTRST          (1<<11)   // WWDGT reset
+#define RCU_APB1RST_TIMER6RST         (1<<5)    // TIMER6 reset
+#define RCU_APB1RST_TIMER5RST         (1<<4)    // TIMER5 reset
+#define RCU_APB1RST_TIMER4RST         (1<<3)    // TIMER4 reset
+#define RCU_APB1RST_TIMER3RST         (1<<2)    // TIMER3 reset
+#define RCU_APB1RST_TIMER2RST         (1<<1)    // TIMER2 reset
+#define RCU_APB1RST_TIMER1RST         (1<<0)    // TIMER1 reset
+
 // AHB enable register (RCU_AHBEN)
+#define RCU_AHBEN_ENETRXEN            (1<<16)   // Ethernet RX clock enable
+#define RCU_AHBEN_ENETTXEN            (1<<15)   // Ethernet TX clock enable
+#define RCU_AHBEN_ENETEN              (1<<14)   // Ethernet clock enable
+#define RCU_AHBEN_USBFSEN             (1<<12)   // USBFS clock enable
+#define RCU_AHBEN_EXMCEN              (1<<8)    // EXMC clock enable
+#define RCU_AHBEN_CRCEN               (1<<6)    // CRC clock enable
+#define RCU_AHBEN_FMCSPEN             (1<<4)    // FMC clock enable when sleep mode
+#define RCU_AHBEN_SRAMSPEN            (1<<2)    // SRAM interface clock enable when sleep mode
+#define RCU_AHBEN_DMA1EN              (1<<1)    // DMA1 clock enable
+#define RCU_AHBEN_DMA0EN              (1<<0)    // DMA0 clock enable
+
 // APB2 enable register (RCU_APB2EN)
+#define RCU_APB2EN_USART0EN         (1<<14)   // USART0 enable
+#define RCU_APB2EN_TIMER7EN         (1<<13)   // Timer 7 enable
+#define RCU_APB2EN_SPI0EN           (1<<12)   // SPI0 enable
+#define RCU_APB2EN_TIMER0EN         (1<<11)   // Timer 0 enable
+#define RCU_APB2EN_ADC1EN           (1<<10)   // ADC1 enable
+#define RCU_APB2EN_ADC0EN           (1<<9)    // ADC0 enable
+#define RCU_APB2EN_PGEN             (1<<8)    // GPIO port G enable
+#define RCU_APB2EN_PFEN             (1<<7)    // GPIO port F enable
+#define RCU_APB2EN_PEEN             (1<<6)    // GPIO port E enable
+#define RCU_APB2EN_PDEN             (1<<5)    // GPIO port D enable
+#define RCU_APB2EN_PCEN             (1<<4)    // GPIO port C enable
+#define RCU_APB2EN_PBEN             (1<<3)    // GPIO port B enable
+#define RCU_APB2EN_PAEN             (1<<2)    // GPIO port A enable
+#define RCU_APB2EN_AFEN             (1<<0)    // Alternate function I/O enable
+
 // APB1 enable register (RCU_APB1EN)
+#define RCU_APB1EN_DACEN            (1<<29)   // DAC enable
+#define RCU_APB1EN_PMUEN            (1<<28)   // Power control enable
+#define RCU_APB1EN_BKPIEN           (1<<27)   // Backup interface enable
+#define RCU_APB1EN_CAN1EN           (1<<26)   // CAN1 enable
+#define RCU_APB1EN_CAN0EN           (1<<25)   // CAN0 enable
+#define RCU_APB1EN_I2C1EN           (1<<22)   // I2C1 enable
+#define RCU_APB1EN_I2C0EN           (1<<21)   // I2C0 enable
+#define RCU_APB1EN_UART4EN          (1<<20)   // UART4 enable
+#define RCU_APB1EN_UART3EN          (1<<19)   // UART3 enable
+#define RCU_APB1EN_USART2EN         (1<<18)   // USART2 enable
+#define RCU_APB1EN_USART1EN         (1<<17)   // USART1 enable
+#define RCU_APB1EN_SPI2EN           (1<<15)   // SPI2 enable
+#define RCU_APB1EN_SPI1EN           (1<<14)   // SPI1 enable
+#define RCU_APB1EN_WWDGTEN          (1<<11)   // WWDGT enable
+#define RCU_APB1EN_TIMER6EN         (1<<5)    // TIMER6 enable
+#define RCU_APB1EN_TIMER5EN         (1<<4)    // TIMER5 enable
+#define RCU_APB1EN_TIMER4EN         (1<<3)    // TIMER4 enable
+#define RCU_APB1EN_TIMER3EN         (1<<2)    // TIMER3 enable
+#define RCU_APB1EN_TIMER2EN         (1<<1)    // TIMER2 enable
+#define RCU_APB1EN_TIMER1EN         (1<<0)    // TIMER1 enable
+
 // Backup domain control register (RCU_BDCTL)
+#define RCU_BDCTL_BKPRST            (1<<16)   // Backup domain reset
+#define RCU_BDCTL_RTCEN             (1<<15)   // RTC clock enable
+#define RCU_BDCTL_RTCSRC_Msk        (3<<8)    // RTC clock entry selection
+#define RCU_BDCTL_LXTALBPS          (1<<2)    // LXTAL bypass mode enable
+#define RCU_BDCTL_LXTALSTB          (1<<1)    // Low speed crystal oscillator stabilization flag
+#define RCU_BDCTL_LXTALEN           (1<<0)    // LXTAL enable
+
+#define RCU_BDCTL_RTCSRC_NoClk      (0<<8)    // No clock selected
+#define RCU_BDCTL_RTCSRC_LXTAL      (1<<8)    // CK_LXTAL selected as RTC source clock
+#define RCU_BDCTL_RTCSRC_IRC40K     (2<<8)    // CK_IRC40K selected as RTC source clock
+#define RCU_BDCTL_RTCSRC_HXTAL_128  (3<<8)    // (CK_HXTAL / 128) selected as RTC source clock
+
 // Reset source/clock register (RCU_RSTSCK)
+#define RCU_RSTSCK_LPRSTF           (1<<31)   // Low-power reset flag
+#define RCU_RSTSCK_WWDGTRSTF        (1<<30)   // Window watchdog timer reset flag
+#define RCU_RSTSCK_FWDGTRSTF        (1<<29)   // Free watchdog timer reset flag
+#define RCU_RSTSCK_SWRSTF           (1<<28)   // Software reset flag
+#define RCU_RSTSCK_PORRSTF          (1<<27)   // Power reset flag
+#define RCU_RSTSCK_EPRSTF           (1<<26)   // External pin reset flag
+#define RCU_RSTSCK_RSTFC            (1<<24)   // Reset flag clear
+#define RCU_RSTSCK_IRC40KSTB        (1<<1)    // IRC40K stabilization flag
+#define RCU_RSTSCK_IRC40KEN         (1<<0)    // IRC40K enable
+
 // AHB reset register (RCU_AHBRST)
+#define RCU_AHBRST_ENETRST        (1<<14)   // ENET reset
+#define RCU_AHBRST_USBFSRST       (1<<12)   // USBFS reset
+
 // Clock configuration register 1 (RCU_CFG1)
+#define RCU_CFG1_I2S2SEL        (1<<18)   // I2S2 clock source selection
+#define RCU_CFG1_I2S1SEL        (1<<17)   // I2S1 clock source selection
+#define RCU_CFG1_PREDV0SEL      (1<<16)   // PREDV0 input clock source selection
+#define RCU_CFG1_PLL2MF_Msk     (0xF<<12) // The PLL2 clock multiplication factor
+#define RCU_CFG1_PLL1MF_Msk     (0xF<<8)  // The PLL1 clock multiplication factor
+#define RCU_CFG1_PREDV1_Msk     (0xF<<4)  // PREDV1 division factor
+#define RCU_CFG1_PREDV0_Msk     (0xF<<0)  // PREDV0 division factor
+
+#define RCU_CFG1_PLL2MF_PLL2x8    (6<<12)
+#define RCU_CFG1_PLL2MF_PLL2x9    (7<<12)
+#define RCU_CFG1_PLL2MF_PLL2x10   (8<<12)
+#define RCU_CFG1_PLL2MF_PLL2x11   (9<<12)
+#define RCU_CFG1_PLL2MF_PLL2x12   (10<<12)
+#define RCU_CFG1_PLL2MF_PLL2x13   (11<<12)
+#define RCU_CFG1_PLL2MF_PLL2x14   (12<<12)
+#define RCU_CFG1_PLL2MF_PLL2x15   (13<<12)
+#define RCU_CFG1_PLL2MF_PLL2x16   (14<<12)
+#define RCU_CFG1_PLL2MF_PLL2x20   (15<<12)
+
+#define RCU_CFG1_PLL1MF_PLL1x8    (6<<8)
+#define RCU_CFG1_PLL1MF_PLL1x9    (7<<8)
+#define RCU_CFG1_PLL1MF_PLL1x10   (8<<8)
+#define RCU_CFG1_PLL1MF_PLL1x11   (9<<8)
+#define RCU_CFG1_PLL1MF_PLL1x12   (10<<8)
+#define RCU_CFG1_PLL1MF_PLL1x13   (11<<8)
+#define RCU_CFG1_PLL1MF_PLL1x14   (12<<8)
+#define RCU_CFG1_PLL1MF_PLL1x15   (13<<8)
+#define RCU_CFG1_PLL1MF_PLL1x16   (14<<8)
+#define RCU_CFG1_PLL1MF_PLL1x20   (15<<8)
+
+#define RCU_CFG1_PREDV1_1         (0<<4)
+#define RCU_CFG1_PREDV1_2         (1<<4)
+#define RCU_CFG1_PREDV1_3         (2<<4)
+#define RCU_CFG1_PREDV1_4         (3<<4)
+#define RCU_CFG1_PREDV1_5         (4<<4)
+#define RCU_CFG1_PREDV1_6         (5<<4)
+#define RCU_CFG1_PREDV1_7         (6<<4)
+#define RCU_CFG1_PREDV1_8         (7<<4)
+#define RCU_CFG1_PREDV1_9         (8<<4)
+#define RCU_CFG1_PREDV1_10        (9<<4)
+#define RCU_CFG1_PREDV1_11        (10<<4)
+#define RCU_CFG1_PREDV1_12        (11<<4)
+#define RCU_CFG1_PREDV1_13        (12<<4)
+#define RCU_CFG1_PREDV1_14        (13<<4)
+#define RCU_CFG1_PREDV1_15        (14<<4)
+#define RCU_CFG1_PREDV1_16        (15<<4)
+
+#define RCU_CFG1_PREDV0_1         (0)
+#define RCU_CFG1_PREDV0_2         (1)
+#define RCU_CFG1_PREDV0_3         (2)
+#define RCU_CFG1_PREDV0_4         (3)
+#define RCU_CFG1_PREDV0_5         (4)
+#define RCU_CFG1_PREDV0_6         (5)
+#define RCU_CFG1_PREDV0_7         (6)
+#define RCU_CFG1_PREDV0_8         (7)
+#define RCU_CFG1_PREDV0_9         (8)
+#define RCU_CFG1_PREDV0_10        (9)
+#define RCU_CFG1_PREDV0_11        (10)
+#define RCU_CFG1_PREDV0_12        (11)
+#define RCU_CFG1_PREDV0_13        (12)
+#define RCU_CFG1_PREDV0_14        (13)
+#define RCU_CFG1_PREDV0_15        (14)
+#define RCU_CFG1_PREDV0_16        (15)
+
 // Deep-sleep mode voltage register (RCU_DSV)
+#define RCU_DSV_DSLPVS_Msk    (7) // Deep-sleep mode voltage select
+
+#define RCU_DSV_DSLPVS_1p2    (0) // The core voltage is 1.2V in Deep-sleep mode
+#define RCU_DSV_DSLPVS_1p1    (1) // The core voltage is 1.1V in Deep-sleep mode
+#define RCU_DSV_DSLPVS_1p0    (2) // The core voltage is 1.0V in Deep-sleep mode
+#define RCU_DSV_DSLPVS_0p9    (3) // The core voltage is 0.9V in Deep-sleep mode
 
 
 /* ToDo: add here your device specific peripheral access structure typedefs
